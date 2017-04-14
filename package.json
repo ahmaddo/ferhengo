@@ -1,0 +1,8 @@
+{
+  "name": "ferhengo",
+  "version": "0.0.01",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-copy": "^1.0.0"
+  }
+}

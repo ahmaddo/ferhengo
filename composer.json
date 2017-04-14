@@ -1,0 +1,14 @@
+{
+    "name": "ark/ferhengo",
+    "description": "ferhengo word lexion collector",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ahmad",
+            "email": "a.ahmad@outlook.de"
+        }
+    ],
+    "require": {
+        "FluentDOM/FluentDOM": "^6.0"
+    }
+}
