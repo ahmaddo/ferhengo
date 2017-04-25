@@ -9,7 +9,7 @@ namespace ferhengo\curl;
 
 class CurlClient {
 
-    protected static function culrCall($url)
+    protected static function curlCall($url)
     {
         $curl = curl_init();
         curl_setopt_array($curl,array(
@@ -25,7 +25,7 @@ class CurlClient {
 
     static function callLink($link)
     {
-        return self::culrCall($link);
+        return self::curlCall($link);
     }
 }
 
