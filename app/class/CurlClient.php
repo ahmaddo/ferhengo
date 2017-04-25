@@ -9,11 +9,6 @@ namespace ferhengo\curl;
 
 class CurlClient {
 
-    function __construct()
-    {
-
-    }
-
     protected static function culrCall($url)
     {
         $curl = curl_init();
@@ -34,5 +29,4 @@ class CurlClient {
     }
 }
 
-$link = 'https://www.wikipedia.org';
-echo htmlspecialchars(CurlClient::callLink($link));
+
