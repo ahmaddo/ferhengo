@@ -14,6 +14,7 @@ class DAO
     /* @var  \mysqli $handel*/
     private $handel;
     private $response;
+    private $affectedRows = 0;
 
     function __construct($config)
     {
@@ -27,6 +28,7 @@ class DAO
     {
         try{
             $this->handel = mysqli_connect($config['host'], $config['username'], $config['password'], $config['database']);
+            $this->handel ->query("SET NAMES 'utf8'");
         } catch (\Exception $e){
            echo 'error: ' . $e->getMessage();
         }
@@ -35,7 +37,19 @@ class DAO
     public function query($SQLquery)
     {
         $request = $this->handel->query($SQLquery);
-        if ($request->num_rows) $this->response = $request->fetch_assoc();
+        if (is_object($request)) {
+            if (isset($request->num_rows))
+            $this->response = $request->fetch_assoc();
+        }
+        if ($this->handel->affected_rows)  $this->affectedRows++;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAffectedRows()
+    {
+        return $this->affectedRows;
     }
 
     public function getResponse()
@@ -43,9 +57,10 @@ class DAO
         return $this->response;
     }
 
-    function __destruct()
+    public function disconnect()
     {
         $this->handel->close();
     }
+
 }
 
