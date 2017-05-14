@@ -8,12 +8,36 @@
 
 namespace ferhengo\regex;
 
+include_once 'CurlClient.php';
+require_once 'DOMreader.php';
 require_once 'DAO.php';
 
+use ferhengo\regex\DOMreader as DOMreader;
 
 class Helper extends DAO
 {
-    public static function insertAllLinksToDB($links)
+
+    static public function followAllTheLinks($source){
+
+        DAO::connect();
+        $links = self::getAllLinks($source);
+        Helper::insertAllLinksIntoDB($links);
+        DAO::disconnect();
+    }
+
+    private static function getAllLinks($source)
+    {
+        $dom = new DOMreader($source);
+        $dom->findLinks($dom->getDOM());
+        $inPageLinks = $dom->getLinks();
+        foreach ( $inPageLinks as $inPageLink) {
+            if ($dom->belongToDomain($inPageLink, 'wiki')) $dom->addToSameDomainLinks($inPageLink);
+        }
+
+        return $dom->getSameLinks();
+    }
+
+    public static function insertAllLinksIntoDB($links)
     {
         foreach ($links as $link) {
             $href = $link;
