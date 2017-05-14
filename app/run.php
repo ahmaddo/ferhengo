@@ -28,12 +28,12 @@ foreach ( $inPageLinks as $inPageLink) {
 $links = $dom->getSameLinks();
 
 
-$dao = new DAO($config);
+DAO::connect($config);
 
 foreach ($links as $link) {
     $href = $link;
     $queryString = 'INSERT INTO links (value) VALUES ("'.$href.'") ;' ;
-    $dao->query($queryString);
+    DAO::query($queryString);
 }
-$dao->disconnect();
-print $dao->getAffectedRows();
+DAO::disconnect();
+print DAO::getAffectedRows();
