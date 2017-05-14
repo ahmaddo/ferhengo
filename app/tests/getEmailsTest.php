@@ -5,8 +5,8 @@
  * Date: 14.04.2017
  * Time: 03:02
  */
-include_once 'class/CurlClient.php';
-include_once  'class/DOMreader.php';
+include_once '../class/CurlClient.php';
+include_once  '../class/DOMreader.php';
 
 $link = 'www.welat.fm';
 $dom = new \ferhengo\regex\DOMreader($link);

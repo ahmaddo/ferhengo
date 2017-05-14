@@ -52,15 +52,16 @@ class DOMreader
         }
     }
 
-    public function findTexts(  $DOM)
+    public function findTexts($DOM)
     {
-        foreach ($DOM('//body]') as $body) {
+        foreach ($DOM('//div') as $body) {
             $this->texts[] = $body->nodeValue;
         }
     }
 
     public function belongToDomain($link, $criteria)
     {
+        // This method should be customized
         if (!$link) return false;
         return substr($link['href'], 1,4 ) == $criteria;
     }
