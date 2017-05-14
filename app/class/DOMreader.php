@@ -68,7 +68,7 @@ class DOMreader
 
     public function addToSameDomainLinks($link)
     {
-        array_push($this->sameDomainLinks, $this->mainDomain.$link['href']);
+        array_push($this->sameDomainLinks, $link['href']);
     }
 
     public function getTexts()
