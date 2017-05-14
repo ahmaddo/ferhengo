@@ -10,17 +10,20 @@ namespace ferhengo\regex;
 
 require_once 'DAO.php';
 
-class Helper
+
+class Helper extends DAO
 {
-    private $DAO;
-
-    function __construct()
+    public static function insertAllLinksToDB($links)
     {
-
+        foreach ($links as $link) {
+            $href = $link;
+            $queryString = 'INSERT INTO '. DAO::$config['table'] .' (value) VALUES ("'.$href.'") ;' ;
+            DAO::query($queryString);
+        }
     }
-
     public static function markLinkAsUsed($link)
     {
-
+        $query = 'UPDATE '. DAO::$config['table'].' SET used = 1 WHERE value = "'. $link .'"';
+        DAO::query($query);
     }
 }

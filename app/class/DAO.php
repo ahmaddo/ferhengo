@@ -8,24 +8,38 @@
 
 namespace ferhengo\regex;
 
+use FluentDOM\Constraints;
+use FluentDOM\Exception;
 
 class DAO
 {
+    protected static $config ;
     /* @var  \mysqli $handel*/
     private static $handel;
     private static $response;
     private static $affectedRows = 0;
 
-    public static function connect($config)
+    private function setConfig()
     {
-        if(!isset($config['host']) || !isset($config['username']) || !isset($config['password']) || !isset($config['database'])) {
-            throw new  \Exception('please set all sql connection data: host, username, password and database.');
+        $config['host'] = 'localhost';
+        $config['username'] = 'username';
+        $config['password'] = 'password';
+        $config['database'] = 'database';
+        $config['table'] = 'table';
+
+        self::$config = $config;
+    }
+
+    public static function connect()
+    {
+        if(!isset(self::$config['host']) || !isset(self::$config['username']) || !isset(self::$config['password']) || !isset(self::$config['database'])) {
+            DAO::setConfig();
         }
         try{
-            self::$handel = mysqli_connect($config['host'], $config['username'], $config['password'], $config['database']);
+            self::$handel = mysqli_connect(self::$config['host'], self::$config['username'], self::$config['password'], self::$config['database']);
             self::$handel ->query("SET NAMES 'utf8'");
         } catch (\Exception $e){
-           echo 'error: ' . $e->getMessage();
+           echo 'error: please set all mySQL configurations (host, username, password, database, table)' . $e->getMessage();
         }
     }
 

@@ -6,12 +6,14 @@
  * Time: 02:08
  */
 include_once 'class/CurlClient.php';
-include_once  'class/DOMreader.php';
+include_once 'class/DOMreader.php';
+include_once 'class/Helper.php';
 include_once  'class/DAO.php';
-include_once  'config.php';
+
 
 use \ferhengo\regex\DOMreader as DOMReader;
 use \ferhengo\regex\DAO as DAO;
+use \ferhengo\regex\Helper as Helper;
 
 header('Content-type: text/html; charset=utf-8');
 
@@ -27,13 +29,9 @@ foreach ( $inPageLinks as $inPageLink) {
 
 $links = $dom->getSameLinks();
 
-
-DAO::connect($config);
-
-foreach ($links as $link) {
-    $href = $link;
-    $queryString = 'INSERT INTO links (value) VALUES ("'.$href.'") ;' ;
-    DAO::query($queryString);
-}
+DAO::connect();
+Helper::insertAllLinksToDB($links);
+Helper::markLinkAsUsed($link);
 DAO::disconnect();
+
 print DAO::getAffectedRows();
