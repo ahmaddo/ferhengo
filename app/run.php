@@ -20,5 +20,5 @@ Helper::followAllTheLinks($source, $criteria);
 
 $notAffectedLinks = Helper::getNotAffectedLinks();
 foreach ($notAffectedLinks as $notAffectedLink) {
-    Helper::followAllTheLinks($source);
+    Helper::followAllTheLinks($source, $criteria);
 }
