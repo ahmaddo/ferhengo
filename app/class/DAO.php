@@ -8,9 +8,6 @@
 
 namespace ferhengo\regex;
 
-use FluentDOM\Constraints;
-use FluentDOM\Exception;
-
 class DAO
 {
     protected static $config ;
@@ -22,10 +19,10 @@ class DAO
     private function setConfig()
     {
         $config['host'] = 'localhost';
-        $config['username'] = 'username';
-        $config['password'] = 'password';
-        $config['database'] = 'database';
-        $config['table'] = 'table';
+        $config['username'] = 'root';
+        $config['password'] = '';
+        $config['database'] = 'db';
+        $config['table'] = 'links';
 
         self::$config = $config;
     }
@@ -45,12 +42,20 @@ class DAO
 
     public static function query($SQLquery)
     {
+        $SQLquery = self::checkSuffix($SQLquery);
+
         $request = static::$handel->query($SQLquery);
         if (is_object($request)) {
             if (isset($request->num_rows))
-            self::$response = $request->fetch_assoc();
+            self::$response = $request->fetch_all(MYSQLI_ASSOC);
         }
         if (self::$handel->affected_rows)  self::$affectedRows++;
+    }
+
+    private static function checkSuffix($query)
+    {
+        if (substr($query, -1) != ';') return $query . ';';
+        return $query;
     }
 
     /**

@@ -17,21 +17,21 @@ use ferhengo\regex\DOMreader as DOMreader;
 class Helper extends DAO
 {
 
-    static public function followAllTheLinks($source){
+    static public function followAllTheLinks($source, $criteria){
 
         DAO::connect();
-        $links = self::getAllLinks($source);
+        $links = self::getAllLinks($source, $criteria);
         Helper::insertAllLinksIntoDB($links);
         DAO::disconnect();
     }
 
-    private static function getAllLinks($source)
+    private static function getAllLinks($source, $criteria)
     {
         $dom = new DOMreader($source);
         $dom->findLinks($dom->getDOM());
         $inPageLinks = $dom->getLinks();
         foreach ( $inPageLinks as $inPageLink) {
-            if ($dom->belongToDomain($inPageLink, 'wiki')) $dom->addToSameDomainLinks($inPageLink);
+            if ($dom->belongToDomain($inPageLink, $criteria)) $dom->addToSameDomainLinks($inPageLink);
         }
 
         return $dom->getSameLinks();
@@ -45,9 +45,20 @@ class Helper extends DAO
             DAO::query($queryString);
         }
     }
+
+    public static function getNotAffectedLinks()
+    {
+        DAO::connect();
+        $query = 'SELECT * FROM '. DAO::$config['table'] . ' WHERE used = 0 ;';
+        DAO::query($query);
+        DAO::disconnect();
+
+        return DAO::getResponse();
+    }
+
     public static function markLinkAsUsed($link)
     {
-        $query = 'UPDATE '. DAO::$config['table'].' SET used = 1 WHERE value = "'. $link .'"';
+        $query = 'UPDATE '. DAO::$config['table'].' SET used = 1 WHERE value = "'. $link .'";';
         DAO::query($query);
     }
 }
