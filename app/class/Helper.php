@@ -41,10 +41,20 @@ class Helper extends DAO
     {
         foreach ($links as $link) {
             $href = $link;
-            $queryString = 'INSERT INTO '. DAO::$config['table'] .' (value) VALUES ("'.$href.'") ;' ;
-            DAO::query($queryString);
+            if(!self::isPresented($link)) {
+                $queryString = 'INSERT INTO '. DAO::$config['table'] .' (value) VALUES ("'.$href.'") ;' ;
+                DAO::query($queryString);
+            }
         }
     }
+
+    public static function isPresented($link)
+    {
+        $queryString = 'SELECT * FROM '. DAO::$config['table'] .'  WHERE value = "'. $link .'";' ;
+        $response = DAO::query($queryString);
+        return $response->num_rows > 0;
+    }
+
 
     public static function getNotAffectedLinks()
     {

@@ -52,9 +52,13 @@ class DAO
             }
             if (self::$handel->affected_rows)  self::$affectedRows++;
 
+            return $request;
+
         } catch ( \Exception $e) {
             $e->getMessage();
         }
+
+        return null;
     }
 
     private static function checkSuffix($query)
