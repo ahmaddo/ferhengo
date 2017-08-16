@@ -21,7 +21,7 @@ class DAO
         $config['host'] = 'localhost';
         $config['username'] = 'root';
         $config['password'] = '';
-        $config['database'] = 'db';
+        $config['database'] = 'ferhengo';
         $config['table'] = 'links';
 
         self::$config = $config;
@@ -44,12 +44,17 @@ class DAO
     {
         $SQLquery = self::checkSuffix($SQLquery);
 
-        $request = static::$handel->query($SQLquery);
-        if (is_object($request)) {
-            if (isset($request->num_rows))
-            self::$response = $request->fetch_all(MYSQLI_ASSOC);
+        try {
+            $request = static::$handel->query($SQLquery);
+            if (is_object($request)) {
+                if (isset($request->num_rows))
+                self::$response = $request->fetch_all(MYSQLI_ASSOC);
+            }
+            if (self::$handel->affected_rows)  self::$affectedRows++;
+
+        } catch ( \Exception $e) {
+            $e->getMessage();
         }
-        if (self::$handel->affected_rows)  self::$affectedRows++;
     }
 
     private static function checkSuffix($query)
